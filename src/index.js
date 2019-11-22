@@ -1,18 +1,22 @@
-import _ from 'lodash';
 import printMe from './print.js';
+import {
+    cube
+} from './math.js';
 
-function component() {
-    let element = document.createElement('div');
-    let btn = document.createElement('button');
+function getComponent() {
+    return import( /* webpackChunkName:"lodash"*/ 'lodash').then(({
+        default: _
+    }) => {
+        var element = document.createElement('div');
 
-    element.innerHTML = _.join(['这里是汉字', 'webpack11213'], ' ');
+        element.innerHTML = _.join(['Hello', 'webpack'], ' ');
 
-    btn.innerHTML = '点击这里，然后查看console!';
-    btn.onclick = printMe;
+        return element;
 
-    element.appendChild(btn);
 
-    return element;
+    }).catch(error => 'An error occurred while loading the component');
 }
 
-document.body.appendChild(component());
+getComponent().then(component => {
+    document.body.appendChild(component);
+})
